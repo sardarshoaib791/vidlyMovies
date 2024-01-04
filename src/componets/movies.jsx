@@ -2,12 +2,21 @@ import React, { Component } from 'react';
 import { getMovies } from '../services/fakeMovieService';
 import Like from './common/like';
 import { paginate } from './utils/paginate';
+import { getGenres } from '../services/fakeGenreService';
 import Pagination from './common/pagination';
+import ListGroup from './common/listGroup';
 class Movies extends Component {
     state = {
-        movies: getMovies(),
+        movies: [],
+        genres:[],
         pageSize: 4,
         currentPage:1
+      };
+
+      componentDidMount() {
+        const genres=[{name:"All Genres"},...getGenres()]
+        this.setState({movies: getMovies(), genres});
+
       };
 
     handleDelete= (movie)=> {
@@ -32,18 +41,33 @@ class Movies extends Component {
         this.setState({currentPage: page})
     };
 
+    handleGenreSelect=genre=>{
+        this.setState({selectedGenre:genre , currentPage: 1});
+
+
+    };
+
       
       
     render() { 
         const {length: count} = this.state.movies
-        const{currentPage, pageSize, movies: allMovies}=this.state;
+        const{currentPage, pageSize, movies: allMovies, selectedGenre}=this.state;
         if(count===0) return <p>Please add movies list</p>;
-        const movies= paginate(allMovies, currentPage, pageSize);
+        const filtered= selectedGenre && selectedGenre._id? allMovies.filter(m=>m.genre._id===selectedGenre._id): allMovies;
+        const movies= paginate(filtered, currentPage, pageSize);
         
 
         return  (
-            <React.Fragment>
-        <p>there are {count} in this list</p>
+            <div className='row'>
+            <div className='col-2'>
+            <ListGroup 
+            items={this.state.genres}  
+            onItemSelect={this.handleGenreSelect}
+            selectedItem={selectedGenre}
+            />
+            </div>
+            <div className='col'>
+            <p>there are {filtered.length} in this list</p>
         <table className='table'>
          <thead>
          <tr>
@@ -71,12 +95,13 @@ class Movies extends Component {
          </tbody>
          </table>
          <Pagination 
-         itemsCount={count} 
+         itemsCount={filtered.length} 
          pageSize={pageSize} 
          onPageChange={this.handlePageChange}
          currentPage={currentPage}
-         />
-         </React.Fragment>)
+         /></div>
+        
+         </div>)
     }
 }
  
