@@ -4,11 +4,12 @@ import Movies from './componets/movies';
 import Counters from './componets/counters';
 import Navbar from './componets/navbar';
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 import Customers from './componets/customers';
 import MoviesForm from './componets/moviesForm';
 import NotFound from './componets/notFount';
 import Rentals from './componets/rentals';
+import Navebar1 from './componets/navBar1';
 
 
 
@@ -72,11 +73,16 @@ class App extends Component {
             />
      </main> */}
                {/* <Movies/> */}
+               <Navebar1/>
+               <Switch>
+               <Route path="/movies/:id" component={MoviesForm}></Route>
                <Route path="/movies" component={Movies}></Route>
                <Route path="/customers" component={Customers}></Route>
                <Route path="/not-found" component={NotFound}></Route>
                <Route path="/rentals" component={Rentals}></Route>
-               <Redirect from="/" to="/movies"></Redirect>
+               <Redirect from="/" exact to="/movies"></Redirect>
+               <Redirect to ="/not-found"></Redirect>
+               </Switch>
 
 
             </div>
