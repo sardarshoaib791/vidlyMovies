@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Input from './common/input';
-
+import  Joi, { abort }  from 'joi-browser';
+import { error } from 'jquery';
 
 
 class Login extends Component {
@@ -8,17 +9,18 @@ class Login extends Component {
         account: { username: "", password: "" },
         errors: {}
     }
+
+    schema = {
+        username : Joi.string().required().label('Username'),
+        password : Joi.string().required().label('Password'),
+    }
     validate = ()=>{
-        const errors = {};
-        const{account}=this.state;
-        if(account.username.trim()==="") 
-            errors.username= "Username required"
-        
-        if(account.password.trim()==="")
-            errors.password ="Password is required"
-        
-        return Object.keys(errors).length=== 0? null : errors;
-        // return {username: 'Username required'}
+        const option ={abortEarly: false}
+        const {error}= Joi.validate(this.state.account, this.schema ,option)
+        if(!error) return null;
+        const errors ={};
+        for( let item of error.details) errors[item.path[0]]= item.message;
+        return errors;
 
     }
 
