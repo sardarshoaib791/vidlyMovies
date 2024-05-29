@@ -10,7 +10,7 @@ import MoviesForm from './componets/moviesForm';
 import NotFound from './componets/notFount';
 import Rentals from './componets/rentals';
 import Navebar1 from './componets/navBar1';
-import Login from './componets/login';
+import LoginForm from './componets/loginForm';
 
 
 
@@ -76,7 +76,7 @@ class App extends Component {
                {/* <Movies/> */}
                <Navebar1/>
                <Switch>
-               <Route path="/login" component={Login}></Route>
+               <Route path="/loginForm" component={LoginForm}></Route>
                <Route path="/movies/:id" component={MoviesForm}></Route>
                <Route path="/movies" component={Movies}></Route>
                <Route path="/customers" component={Customers}></Route>

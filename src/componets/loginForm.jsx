@@ -4,7 +4,7 @@ import  Joi, { abort }  from 'joi-browser';
 import { error } from 'jquery';
 
 
-class Login extends Component {
+class LoginForm extends Component {
     state = {
         account: { username: "", password: "" },
         errors: {}
@@ -82,4 +82,4 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default LoginForm;
